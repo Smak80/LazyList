@@ -16,6 +16,53 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.application
 
+@Composable
+@Preview
+fun App() {
+    var text by remember { mutableStateOf("Hello, World!") }
+    val list = remember { SnapshotStateList<Int>() }
+    MaterialTheme {
+        Scaffold(
+            floatingActionButton = {
+                TextButton(onClick = {
+                    list.add(list.size+1)
+                }){
+                    Text("Добавить")
+                }
+            },
+            topBar = {
+                TopAppBar {
+                    Text("Меню")
+                }
+            }
+        ) {
+            LazyColumn(
+                modifier = Modifier.padding(it),
+                verticalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
+                items(list) {
+                    MyCard(it)
+                }
+            }
+        }
+    }
+}
+
+@Composable
+fun MyCard(
+    num: Int,
+    modifier: Modifier = Modifier,
+){
+    Card(
+        modifier = modifier,
+        backgroundColor = MaterialTheme.colors.primarySurface
+    ){
+        Text(
+            "Карточка №$num",
+            modifier = Modifier.padding(32.dp)
+        )
+    }
+}
 
 fun main() = application {
     Window(onCloseRequest = ::exitApplication) {
